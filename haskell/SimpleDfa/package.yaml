@@ -1,0 +1,38 @@
+name:                SimpleDfa
+version:             0.1.0.0
+github:              "elfsternberg/SimpleDfa"
+license:             BSD3
+author:              "Elf M. Sternberg"
+maintainer:          "elf.sternberg@gmail.com"
+copyright:           "Copyright ⓒ 2019 Elf M. Sternberg"
+category:            academia
+
+extra-source-files:
+- README.md
+- ChangeLog.md
+
+# Metadata used when publishing your package
+# synopsis:            Short description of your package
+# category:            Web
+
+# To avoid duplicated efforts in documentation and dealing with the
+# complications of embedding Haddock markup inside cabal files, it is
+# common to point users to the README.md file.
+description:         Please see the README on GitHub at <https://github.com/elfsternberg/SimpleDfa#readme>
+
+dependencies:
+  - base
+  - ghc <= 8.6.4
+
+library:
+  exposed-modules: SimpleDfa
+  source-dirs: src
+  ghc-options: -Wall
+
+tests:
+  test:
+    main: Spec.hs
+    source-dirs: test
+    dependencies:
+      - SimpleDfa
+      - hspec

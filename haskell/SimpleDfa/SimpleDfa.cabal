@@ -1,0 +1,54 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.31.1.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: 257d67853afedad2d11e153572271cdfea9ef7a0b4c8282bb91241e5916d9571
+
+name:           SimpleDfa
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/elfsternberg/SimpleDfa#readme>
+category:       academia
+homepage:       https://github.com/elfsternberg/SimpleDfa#readme
+bug-reports:    https://github.com/elfsternberg/SimpleDfa/issues
+author:         Elf M. Sternberg
+maintainer:     elf.sternberg@gmail.com
+copyright:      Copyright ⓒ 2019 Elf M. Sternberg
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/elfsternberg/SimpleDfa
+
+library
+  exposed-modules:
+      SimpleDfa
+  other-modules:
+      Paths_SimpleDfa
+  hs-source-dirs:
+      src
+  ghc-options: -Wall
+  build-depends:
+      base
+    , ghc <=8.6.4
+  default-language: Haskell2010
+
+test-suite test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_SimpleDfa
+  hs-source-dirs:
+      test
+  build-depends:
+      SimpleDfa
+    , base
+    , ghc <=8.6.4
+    , hspec
+  default-language: Haskell2010

@@ -1,4 +1,4 @@
-module SimpleDfa (amatch, amatch2, Dfa (..)) where
+module SimpleDfa (amatch2, Dfa (..), Node(..)) where
 
 -- A DFA is a finite automata consisting of a five-tuple
 -- (Q, Σ, δ, q0, F), where Q is the set of all possible
@@ -11,37 +11,22 @@ module SimpleDfa (amatch, amatch2, Dfa (..)) where
 
 import Control.Monad (foldM)
 
-data Dfa state symbol = Dfa {
-  nodes :: [(state, [(symbol, state)])],
-  starts :: state,
-  accepts :: [state]
+data Node sym = Node [(sym, Node sym)] Bool
+  
+data Dfa sym = Dfa {
+  nodes :: [Node sym],
+  starts :: (Node sym)
 }
 
-trans :: (Eq sym, Eq sta) => Dfa sta sym -> sta -> sym -> Maybe sta
-trans dfa cur sym =
-  case lookup cur (nodes dfa) of
-    Just rules -> lookup sym rules
-    Nothing -> Nothing
+nextn :: (Eq sym) => Node sym -> sym -> Maybe (Node sym)
+nextn node s =
+  let (Node rules _) = node
+  in lookup s rules
 
-amatch :: (Eq symbol, Eq state) => Dfa state symbol -> [symbol] -> Bool
-amatch dfa str =
-  case lookup (starts dfa) (nodes dfa)  of
-    Just _  -> aamatch (starts dfa) str
-    Nothing -> False         
-  where
-    aamatch cur []     = cur `elem` (accepts dfa)
-    aamatch cur (s:ss) =
-      case trans dfa cur s of
-        Just c -> aamatch c ss
-        Nothing -> False
-
-amatch2 :: (Eq symbol, Eq state) => Dfa state symbol -> [symbol] -> Bool  
-amatch2 dfa str = case foldM anext (starts dfa) str of
-  Just c  -> c `elem` (accepts dfa)
-  Nothing -> False
-  where
-    anext c s = case lookup c (nodes dfa) of
-      Just rules -> lookup s rules
-      Nothing    -> Nothing
-
-
+amatch2 :: (Eq sym) => Dfa sym -> [sym] -> Bool  
+amatch2 dfa str =
+  case foldM nextn (starts dfa) str of
+      Just c  ->
+        accepts
+        where (Node _ accepts) = c
+      Nothing -> False

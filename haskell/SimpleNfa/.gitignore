@@ -1,0 +1,12 @@
+.stack-work/
+Automatan1p4.cabal
+*~
+.#*
+*~
+*#
+*.hi
+*.hp
+.hpc
+.hsenv
+.HTF/
+.ghc.environment.*

@@ -1,4 +1,4 @@
-module SimpleDfa (amatch2, Dfa (..), Node(..)) where
+module SimpleNfa (amatch2, Nfa (..), Node(..)) where
 
 -- A DFA is a finite automata consisting of a five-tuple (Q, Σ, δ, q0,
 -- F), where Q is the set of all possible states, Σ is the set of all
@@ -16,14 +16,22 @@ module SimpleDfa (amatch2, Dfa (..), Node(..)) where
 
 import Control.Monad (foldM)
 
-data Node sym = Node [(sym, Node sym)] Bool
+-- In an NFA, a Node consists of some data (here, the data is Unit
+-- (`()`), and therefore too boring to have its own field), and a
+-- collection of rules that include the symbol for the rule and the
+-- list of nodes to which that symbol causes the NFA to transition.
+data Node sym = Node [(sym, [Node sym])] Bool
   
-data Dfa sym = Dfa {
+data Nfa sym = Nfa {
   nodes :: [Node sym],
   starts :: (Node sym)
 }
 
-nextn :: (Eq sym) => Node sym -> sym -> Maybe (Node sym)
+-- If this is the case, then this function takes a list of nodes and a
+-- symbol, and returns a new list of nodes from the collection of
+-- transition lists that matched.
+  
+nextn :: (Eq sym) => [Node sym] -> sym -> [Node sym]
 nextn node s =
   let (Node rules _) = node
   in lookup s rules
@@ -35,9 +43,9 @@ nextn node s =
 -- for future implementations where I just won't bother with
 -- transitions that lead permanently to the reject state.
 
-amatch2 :: (Eq sym) => Dfa sym -> [sym] -> Bool  
+amatch2 :: (Eq sym) => [Nfa sym] -> [sym] -> Bool  
 amatch2 dfa str =
-  case foldM nextn (starts dfa) str of
+  case foldM nextn [(starts dfa)] str of
       Just c  ->
         accepts
         where (Node _ accepts) = c
